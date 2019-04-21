@@ -3,6 +3,7 @@ kind: Service
 metadata:
   labels:
     api: customerapi
+  namespace: microservice-demo  
   name: customerapi
 spec:
   ports:

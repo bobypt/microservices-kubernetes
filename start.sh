@@ -26,24 +26,24 @@ function deploy() {
 
 function test() {
     echo "Testing customer api"
-    customerApiBasePath=$(minikube service customerapi  --url)
+    customerApiBasePath=$(minikube service customerapi -n microservice-demo --url)
     echo "Testing " ${customerApiBasePath}/api/v1/customerapi/health
     curl ${customerApiBasePath}/api/v1/customerapi/health
 
     echo "Testing order api"
-    orderApiBasePath=$(minikube service orderapi  --url)
+    orderApiBasePath=$(minikube service orderapi -n microservice-demo --url)
     echo "Testing " ${orderApiBasePath}/api/v1/orderapi/health
     curl ${orderApiBasePath}/api/v1/orderapi/health    
 }
 
 function delete() {
     echo "Delete customer api"
-    kubectl delete deployment.apps/customerapi
-    kubectl delete service/customerapi
+    kubectl delete deployment.apps/customerapi -n microservice-demo
+    kubectl delete service/customerapi -n microservice-demo
 
     echo "Delete order api"
-    kubectl delete deployment.apps/orderapi
-    kubectl delete service/orderapi
+    kubectl delete deployment.apps/orderapi -n microservice-demo
+    kubectl delete service/orderapi -n microservice-demo
    
 }
 

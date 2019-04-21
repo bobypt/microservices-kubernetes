@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: microservice-demo
+  labels:
+    apps: microservice-demo
+  annotations:
+    type: demo

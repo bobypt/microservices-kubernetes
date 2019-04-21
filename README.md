@@ -30,9 +30,41 @@ eval $(minikube docker-env)
 
 ## Build docker service images
 
- - Build docker images 
+- Build docker images 
  
- ```./start.sh build```
+```./start.sh build```
+
+ ## Create a namespace
+
+```kubectl create -f deployment/namespace.yaml```
+
+```namespace/microservice-demo created```
+
+
+```kubectl create -f deployment/resourceQuota.yaml```
+
+```resourcequota/mem-cpu-quota created```
+
+
+```kubectl describe ns microservice-demo```
+
+```
+Name:         microservice-demo
+Labels:       apps=microservice-demo
+Annotations:  type: demo
+Status:       Active
+
+Resource Quotas
+ Name:            mem-cpu-quota
+ Resource         Used  Hard
+ --------         ---   ---
+ limits.cpu       0     8
+ limits.memory    0     6Gi
+ requests.cpu     0     1
+ requests.memory  0     1Gi
+
+No resource limits.
+```
 
 ## Deploy to kubernetes 
 
@@ -40,7 +72,7 @@ eval $(minikube docker-env)
 
 ## Inspect kubernetes 
 
- ```kubectl get all```
+ ```kubectl get all -n microservice-demo```
 
  ```
  NAME                                    READY   STATUS    RESTARTS   AGE
@@ -62,6 +94,9 @@ NAME                                          DESIRED   CURRENT   READY   AGE
 replicaset.apps/customer-service-75bd99568c   2         2         2       6m33s
 replicaset.apps/order-service-5c769cc64f      2         2         2       6m32s
 ```
+
+
+```kubectl describe deployment  deployment.apps/customer-service -n microservice-demo```
 
 ## Test services
 

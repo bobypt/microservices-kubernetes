@@ -4,6 +4,7 @@ metadata:
   labels:
     api: orderapi
   name: orderapi
+  namespace: microservice-demo
 spec:
   ports:
   - nodePort: 30500

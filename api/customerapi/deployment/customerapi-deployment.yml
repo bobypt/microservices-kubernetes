@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: customer-service
+  name: customerapi
   labels:
-    app: customer-service
+    api: customerapi
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: customer-service
+      api: customerapi
   template:
     metadata:
       labels:
-        app: customer-service
+        api: customerapi
     spec:
       containers:
-      - image: msdemo/customerservice:1
-        name: customer-service
+      - image: msdemo/customerapi:1
+        name: customerapi
         ports:
         - containerPort: 8080

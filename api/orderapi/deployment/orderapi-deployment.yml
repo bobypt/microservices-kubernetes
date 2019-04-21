@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: order-service
+  name: orderapi
   labels:
-    app: order-service
+    api: orderapi
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: order-service
+      api: orderapi
   template:
     metadata:
       labels:
-        app: order-service
+        api: orderapi
     spec:
       containers:
-      - image: msdemo/orderservice:1
-        name: order-service
+      - image: msdemo/orderapi:1
+        name: orderapi
         ports:
         - containerPort: 8080

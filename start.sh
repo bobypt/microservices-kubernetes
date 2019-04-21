@@ -1,49 +1,49 @@
 #!/bin/bash
 
 function build() {
-    echo "Building customer service"
-    pushd services/customerservice
+    echo "Building customer api"
+    pushd api/customerapi
     npm install
-    docker build -t msdemo/customerservice:1 .
+    docker build -t msdemo/customerapi:1 .
     popd
 
-    echo "Building order service"
-    pushd services/orderservice
+    echo "Building order api"
+    pushd api/orderapi
     npm install
-    docker build -t msdemo/orderservice:1 .
+    docker build -t msdemo/orderapi:1 .
     popd
 }
 
 function deploy() {
-    echo "Deploying customer service"
-    kubectl create -f services/customerservice/deployment/customer-service-deployment.yml
-    kubectl create -f services/customerservice/deployment/customer-service.yml
+    echo "Deploying customer api"
+    kubectl create -f api/customerapi/deployment/customerapi-deployment.yml
+    kubectl create -f api/customerapi/deployment/customerapi-service.yml
 
-    echo "Deploying order service"
-    kubectl create -f services/orderservice/deployment/order-service-deployment.yml
-    kubectl create -f services/orderservice/deployment/order-service.yml
+    echo "Deploying order api"
+    kubectl create -f api/orderapi/deployment/orderapi-deployment.yml
+    kubectl create -f api/orderapi/deployment/orderapi-service.yml
 }
 
 function test() {
-    echo "Testing customer service"
-    customerServiceBasePath=$(minikube service customer-service  --url)
-    echo "Testing " ${customerServiceBasePath}/api/v1/customerservice/health
-    curl ${customerServiceBasePath}/api/v1/customerservice/health
+    echo "Testing customer api"
+    customerApiBasePath=$(minikube service customerapi  --url)
+    echo "Testing " ${customerApiBasePath}/api/v1/customerapi/health
+    curl ${customerApiBasePath}/api/v1/customerapi/health
 
-    echo "Testing order service"
-    orderServiceBasePath=$(minikube service order-service  --url)
-    echo "Testing " ${orderServiceBasePath}/api/v1/orderservice/health
-    curl ${orderServiceBasePath}/api/v1/orderservice/health    
+    echo "Testing order api"
+    orderApiBasePath=$(minikube service orderapi  --url)
+    echo "Testing " ${orderApiBasePath}/api/v1/orderapi/health
+    curl ${orderApiBasePath}/api/v1/orderapi/health    
 }
 
 function delete() {
-    echo "Delete customer service"
-    kubectl delete deployment.apps/customer-service
-    kubectl delete service/customer-service
+    echo "Delete customer api"
+    kubectl delete deployment.apps/customerapi
+    kubectl delete service/customerapi
 
-    echo "Delete order service"
-    kubectl delete deployment.apps/order-service
-    kubectl delete service/order-service
+    echo "Delete order api"
+    kubectl delete deployment.apps/orderapi
+    kubectl delete service/orderapi
    
 }
 

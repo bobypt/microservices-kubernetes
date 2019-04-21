@@ -23,12 +23,12 @@ rm -rf ~/.minikube
 ```minikube start```
 
 
-## Set docker 
+## Set docker environment
 
 eval $(minikube docker-env)
 
 
-## Build docker service images
+## Build docker api images
 
 - Build docker images 
  
@@ -38,12 +38,12 @@ eval $(minikube docker-env)
 
 ```kubectl create -f deployment/namespace.yaml```
 
-```namespace/microservice-demo created```
+output -> ```namespace/microservice-demo created```
 
 
 ```kubectl create -f deployment/resourceQuota.yaml```
 
-```resourcequota/mem-cpu-quota created```
+output -> ```resourcequota/mem-cpu-quota created```
 
 
 ```kubectl describe ns microservice-demo```
@@ -75,24 +75,23 @@ No resource limits.
  ```kubectl get all -n microservice-demo```
 
  ```
- NAME                                    READY   STATUS    RESTARTS   AGE
-pod/customer-service-75bd99568c-5r8xt   1/1     Running   0          6m33s
-pod/customer-service-75bd99568c-v2z8d   1/1     Running   0          6m33s
-pod/order-service-5c769cc64f-k58wz      1/1     Running   0          6m32s
-pod/order-service-5c769cc64f-mszml      1/1     Running   0          6m32s
+NAME                               READY   STATUS    RESTARTS   AGE
+pod/customerapi-84fcfbb4bf-f267s   1/1     Running   0          5s
+pod/customerapi-84fcfbb4bf-z24mw   1/1     Running   0          5s
+pod/orderapi-5c76b8bbfc-5mdgv      1/1     Running   0          5s
+pod/orderapi-5c76b8bbfc-lfrmp      1/1     Running   0          5s
 
-NAME                       TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
-service/customer-service   NodePort    10.109.247.3   <none>        8080:30501/TCP   6m33s
-service/kubernetes         ClusterIP   10.96.0.1      <none>        443/TCP          12h
-service/order-service      NodePort    10.99.235.65   <none>        8080:30500/TCP   6m32s
+NAME                  TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+service/customerapi   NodePort   10.110.186.222   <none>        8080:30501/TCP   5s
+service/orderapi      NodePort   10.109.244.92    <none>        8080:30500/TCP   5s
 
-NAME                               READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/customer-service   2/2     2            2           6m33s
-deployment.apps/order-service      2/2     2            2           6m32s
+NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/customerapi   2/2     2            2           5s
+deployment.apps/orderapi      2/2     2            2           5s
 
-NAME                                          DESIRED   CURRENT   READY   AGE
-replicaset.apps/customer-service-75bd99568c   2         2         2       6m33s
-replicaset.apps/order-service-5c769cc64f      2         2         2       6m32s
+NAME                                     DESIRED   CURRENT   READY   AGE
+replicaset.apps/customerapi-84fcfbb4bf   2         2         2       5s
+replicaset.apps/orderapi-5c76b8bbfc      2         2         2       5s
 ```
 
 
@@ -114,8 +113,28 @@ Testing  http://192.168.99.100:30500/api/v1/orderservice/health
 
  If you run again, you can see that the instance id changes between two values as we have two replicas for each service.
 
+## Check resource utilization
+```kubectl describe ns microservice-demo```
 
- ## Delete services
+```
+Name:         microservice-demo
+Labels:       apps=microservice-demo
+Annotations:  type: demo
+Status:       Active
+
+Resource Quotas
+ Name:            mem-cpu-quota
+ Resource         Used   Hard
+ --------         ---    ---
+ limits.cpu       4      8
+ limits.memory    4Gi    6Gi
+ requests.cpu     800m   1
+ requests.memory  512Mi  1Gi
+
+No resource limits.
+```
+
+ ## Delete deployments and services
 
  ```./start.sh delete```
 

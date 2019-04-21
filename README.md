@@ -15,18 +15,21 @@ rm -rf ~/.minikube
 
 ```sudo mv minikube /usr/local/bin```
 
-
-
-
 ## start minukube
 
 ```minikube start```
-
 
 ## Set docker environment
 
 eval $(minikube docker-env)
 
+## Check versions
+```kubectl version```
+
+```
+Client Version: version.Info{Major:"1", Minor:"14", GitVersion:"v1.14.1", GitCommit:"b7394102d6ef778017f2ca4046abbaa23b88c290", GitTreeState:"clean", BuildDate:"2019-04-08T17:11:31Z", GoVersion:"go1.12.1", Compiler:"gc", Platform:"darwin/amd64"}
+Server Version: version.Info{Major:"1", Minor:"14", GitVersion:"v1.14.0", GitCommit:"641856db18352033a0d96dbc99153fa3b27298e5", GitTreeState:"clean", BuildDate:"2019-03-25T15:45:25Z", GoVersion:"go1.12.1", Compiler:"gc", Platform:"linux/amd64"}
+```
 
 ## Build docker api images
 
@@ -66,7 +69,7 @@ Resource Quotas
 No resource limits.
 ```
 
-## Deploy to kubernetes 
+## Deploy APIs
 
  ```./start.sh deploy```
 
